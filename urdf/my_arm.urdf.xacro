@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot">
+    <link name="world"></link>
+    <link name="base_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.1 0.1 0.1"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.1 0.1 0.1"/>
+            </geometry>    
+        </collision>
+    </link>
+    <joint name="base_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="world"/>
+        <child link="base_link"/>
+    </joint>
+
+    <!-- <link name="up_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.1 0.1 0.1"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.1 0.1 0.1"/>
+            </geometry>    
+        </collision>
+    </link>
+    <joint name="shoulder" type="revolute">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="up_link"/>
+        <axis xyz="0 0 1"/>
+        <limit effort="1000.0" lower="-1.57" upper="1.57" velocity="1.0"/>
+    </joint> -->
+</robot>
