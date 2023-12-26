@@ -1,45 +1,168 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot">
+    <xacro:include filename="hand.urdf.xacro" />
+
     <link name="world"></link>
-    <link name="base_link">
-        <visual>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-            <geometry>
-                <box size="0.1 0.1 0.1"/>
-            </geometry>
-        </visual>
-        <collision>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-            <geometry>
-                <box size="0.1 0.1 0.1"/>
-            </geometry>    
-        </collision>
-    </link>
+
     <joint name="base_joint" type="fixed">
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <parent link="world"/>
         <child link="base_link"/>
     </joint>
 
-    <!-- <link name="up_link">
+    <link name="base_link">
         <visual>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin xyz="0 0 0.01" rpy="0 0 0"/>
             <geometry>
-                <box size="0.1 0.1 0.1"/>
+                <box size="0.5 0.5 0.02"/>
             </geometry>
         </visual>
         <collision>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin xyz="0 0 0.01" rpy="0 0 0"/>
             <geometry>
-                <box size="0.1 0.1 0.1"/>
+                <box size="0.5 0.5 0.02"/>
             </geometry>    
         </collision>
+        <inertial>
+            <origin xyz="0 0 0.01" rpy="0 0 0"/>
+            <mass value="10" />
+            <inertia ixx="0.2083" ixy="0.0" ixz="0.0" iyy="0.2083" iyz="0.0" izz="0.416667" />
+        </inertial>
     </link>
-    <joint name="shoulder" type="revolute">
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+    
+    <joint name="under_joint" type="revolute">
+        <origin xyz="0 0 0.02" rpy="0 0 0"/>
         <parent link="base_link"/>
         <child link="up_link"/>
         <axis xyz="0 0 1"/>
         <limit effort="1000.0" lower="-1.57" upper="1.57" velocity="1.0"/>
-    </joint> -->
+    </joint>
+
+    <link name="up_link">
+        <visual>
+            <origin xyz="0 0 0.2" rpy="0 0 0"/>
+            <geometry>
+                <cylinder length="0.4" radius="0.05"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0.2" rpy="0 0 0"/>
+            <geometry>
+                <cylinder length="0.4" radius="0.05"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <origin xyz="0 0 0.2" rpy="0 0 0"/>
+            <mass value="10" />
+            <inertia ixx="0.139583" ixy="0.0" ixz="0.0" iyy="0.139583" iyz="0.0" izz="0.0125" />
+        </inertial>
+    </link>
+
+    <joint name="shoulder" type="revolute">
+        <origin xyz="0 0 0.4" rpy="0 0 0"/>
+        <parent link="up_link"/>
+        <child link="arm_link_1"/>
+        <axis xyz="0 1 0"/>
+        <limit effort="1000.0" lower="-1.57" upper="1.57" velocity="1.0"/>
+    </joint>
+
+    <link name="arm_link_1">
+        <visual>
+            <origin xyz="-0.25 0 0" rpy="0 -1.571 0"/>
+            <geometry>
+                <cylinder length="0.5" radius="0.05"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="-0.25 0 0" rpy="0 -1.571 0"/>
+            <geometry>
+                <cylinder length="0.5" radius="0.05"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <origin xyz="-0.25 0 0" rpy="0 0 0"/>
+            <mass value="10" />
+            <inertia ixx="0" ixy="0.0" ixz="0.0" iyy="0.8333" iyz="0.0" izz="0" />
+        </inertial>
+    </link>
+
+    <joint name="elbow" type="revolute">
+        <origin xyz="-0.5 0 0" rpy="0 0 0"/>
+        <parent link="arm_link_1"/>
+        <child link="arm_link_2"/>
+        <axis xyz="0 1 0"/>
+        <limit effort="1000.0" lower="-1.57" upper="1.57" velocity="1.0"/>
+    </joint>
+
+    <link name="arm_link_2">
+        <visual>
+            <origin xyz="-0.25 0 0" rpy="0 -1.571 0"/>
+            <geometry>
+                <cylinder length="0.5" radius="0.05"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="-0.25 0 0" rpy="0 -1.571 0"/>
+            <geometry>
+                <cylinder length="0.5" radius="0.05"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <origin xyz="-0.25 0 0" rpy="0 -1.571 0"/>
+            <mass value="10" />
+            <inertia ixx="0" ixy="0.0" ixz="0.0" iyy="0.8333" iyz="0.0" izz="0" />
+        </inertial>
+    </link>
+
+    <joint name="wrist" type="revolute">
+        <origin xyz="-0.5 0 0" rpy="0 0 0"/>
+        <parent link="arm_link_2"/>
+        <child link="hand_bottom_link"/>
+        <axis xyz="0 1 0"/>
+        <limit effort="1000.0" lower="-1.57" upper="1.57" velocity="1.0"/>
+    </joint>
+
+    <link name="hand_bottom_link">
+        <xacro:hand_bottom />
+    </link>
+
+    <link name="hand_left_link">
+        <xacro:hand_left/>
+    </link>
+
+    <link name="hand_right_link">
+        <xacro:hand_right/>
+    </link>
+
+    <link name="hand_front_link">
+        <xacro:hand_front/>
+    </link>
+
+    <link name="hand_back_link">
+        <xacro:hand_back/>
+    </link>
+
+    <joint name="bottom_left_joint" type="fixed">
+        <origin xyz="-0.1 0 0" rpy="0 0 0"/>
+        <parent link="hand_bottom_link"/>
+        <child link="hand_left_link"/>
+    </joint>
+
+    <joint name="bottom_right_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="hand_bottom_link"/>
+        <child link="hand_right_link"/>
+    </joint>
+
+    <joint name="bottom_front_joint" type="fixed">
+        <origin xyz="-0.05 0.05 0" rpy="0 0 0"/>
+        <parent link="hand_bottom_link"/>
+        <child link="hand_front_link"/>
+    </joint>
+
+    <joint name="bottom_back_joint" type="fixed">
+        <origin xyz="-0.05 -0.05 0" rpy="0 0 0"/>
+        <parent link="hand_bottom_link"/>
+        <child link="hand_back_link"/>
+    </joint>
 </robot>
